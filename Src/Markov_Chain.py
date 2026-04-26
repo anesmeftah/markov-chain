@@ -68,14 +68,15 @@ class MarkovChain:
         return frequencies, theoretical_pi
     
     def plot_trajectoire(self , trajectoire):
-        plt.figure(figsize=(12, 4))
-        plt.step(range(len(trajectoire)), trajectoire, where='post')
-        plt.yticks(range(len(self.etats)), self.etats)
-        plt.xlabel("Temps (Pas)")
-        plt.ylabel("État")
-        plt.title("Simulation de la trajectoire de la chaîne de Markov")
-        plt.grid(axis='x', linestyle='--', alpha=0.7)
-        plt.show()
+        fig, ax = plt.subplots(figsize=(12, 4))
+        ax.step(range(len(trajectoire)), trajectoire, where='post')
+        ax.set_yticks(range(len(self.etats)))
+        ax.set_yticklabels(self.etats)
+        ax.set_xlabel("Temps (Pas)")
+        ax.set_ylabel("État")
+        ax.set_title("Simulation de la trajectoire de la chaîne de Markov")
+        ax.grid(axis='x', linestyle='--', alpha=0.7)
+        return fig
 
 
     def plot_convergence(self , trajectoire , target_state_index , theoretical_value):
@@ -83,23 +84,30 @@ class MarkovChain:
         cumulative_counts = np.cumsum(np.array(trajectoire) == target_state_index)
         frequencies = cumulative_counts / (np.arange(len(trajectoire)) + 1)
         
-        plt.figure(figsize=(10, 5))
-        plt.plot(frequencies, label="Fréquence observée (Empirique)")
-        plt.axhline(y=theoretical_value, color='r', linestyle='--', label="Valeur théorique (π)")
-        plt.xlabel("Nombre d'itérations")
-        plt.ylabel("Probabilité")
-        plt.title(f"Convergence vers la distribution stationnaire")
-        plt.legend()
-        plt.show()
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.plot(frequencies, label="Fréquence observée (Empirique)")
+        ax.axhline(y=theoretical_value, color='r', linestyle='--', label="Valeur théorique (π)")
+        ax.set_xlabel("Nombre d'itérations")
+        ax.set_ylabel("Probabilité")
+        ax.set_title("Convergence vers la distribution stationnaire")
+        ax.legend()
+        return fig
 
     def plot_heatmap(self):
-        plt.figure(figsize=(6, 5))
-        sns.heatmap(self.matrice_transition, annot=True, xticklabels=self.etats, yticklabels=self.etats, 
-                    cmap="Blues", fmt=".2f")
-        plt.title("Matrice de Transition P")
-        plt.ylabel("État Actuel")
-        plt.xlabel("État Suivant")
-        plt.show()
+        fig, ax = plt.subplots(figsize=(6, 5))
+        sns.heatmap(
+            self.matrice_transition,
+            annot=True,
+            xticklabels=self.etats,
+            yticklabels=self.etats,
+            cmap="Blues",
+            fmt=".2f",
+            ax=ax,
+        )
+        ax.set_title("Matrice de Transition P")
+        ax.set_ylabel("État Actuel")
+        ax.set_xlabel("État Suivant")
+        return fig
 
 
 
