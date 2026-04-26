@@ -18,7 +18,7 @@ mc_meteo = MarkovChain(["No_Rain", "Rain"], P_meteo, pi0)
 
 
 # Simulation
-trajectoire = mc_meteo.simulate(n_steps=20)
+trajectoire = mc_meteo.simulate(n_steps=200)
 print(f"Trajectoire simulée : {trajectoire}")
 
 mc_meteo.plot_trajectoire(trajectoire)
